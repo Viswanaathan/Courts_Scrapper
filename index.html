@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCourts Case Listing Scraper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <nav class="navbar glass">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2 class="gradient-text">eCourts Scraper</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link magnetic">Home</a>
+                <a href="#cause-list" class="nav-link magnetic">Cause List</a>
+                <a href="#case-check" class="nav-link magnetic">Case Check</a>
+                <a href="#about" class="nav-link magnetic">About</a>
+                <button id="theme-toggle" class="theme-btn magnetic">🌙 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header" id="home">
+        <div class="header-content">
+            <h1 class="typing-text">eCourts Case Listing Scraper</h1>
+            <p class="glow-text">Real-time court case information from eCourts Services</p>
+            <div class="scroll-indicator">
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="cause-list-section glass fade-in" id="cause-list">
+            <div class="container">
+                <h2 class="gradient-text">Download Cause List</h2>
+                <div class="court-selection">
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="state">State</label>
+                            <select id="state" class="glass-input">
+                                <option value="">Select State</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label for="district">District</label>
+                            <select id="district" class="glass-input" disabled>
+                                <option value="">Select District</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="court-complex">Court Complex</label>
+                            <select id="court-complex" class="glass-input" disabled>
+                                <option value="">Select Court Complex</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label for="court">Court</label>
+                            <select id="court" class="glass-input" disabled>
+                                <option value="">Select Court</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="cause-list-date">Date</label>
+                            <input type="date" id="cause-list-date" class="glass-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="fetch-cause-list" class="btn primary btn-3d ripple">
+                        <i class="fas fa-search"></i> Fetch Cause List
+                    </button>
+                    <button id="download-cause-list" class="btn accent btn-3d ripple">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+
+                <div id="cause-list-results" class="results-section hidden">
+                    <h3>Cause List Results</h3>
+                    <div class="result-card glass">
+                        <div class="result-field">
+                            <span class="field-label">Date:</span>
+                            <span id="result-cause-date" class="field-value">-</span>
+                        </div>
+                        <div class="result-field">
+                            <span class="field-label">Total Cases:</span>
+                            <span id="result-total-cases" class="field-value">-</span>
+                        </div>
+                    </div>
+                    <div id="cause-list-cases" class="cases-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="case-check-section glass fade-in" id="case-check">
+            <div class="container">
+                <h2 class="gradient-text">Check Case Listing</h2>
+                <div class="input-group">
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="cnr">CNR Number</label>
+                            <input type="text" id="cnr" placeholder="e.g., MHAU010012342023" class="glass-input">
+                        </div>
+                        <div class="input-field">
+                            <label for="case_type">Case Type</label>
+                            <input type="text" id="case_type" placeholder="e.g., CR, CS, CC" class="glass-input">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="case_number">Case Number</label>
+                            <input type="number" id="case_number" placeholder="e.g., 123" class="glass-input">
+                        </div>
+                        <div class="input-field">
+                            <label for="case_year">Case Year</label>
+                            <input type="number" id="case_year" placeholder="e.g., 2025" class="glass-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="check-today" class="btn primary btn-3d ripple">
+                        <i class="fas fa-calendar-day"></i> Check Today
+                    </button>
+                    <button id="check-tomorrow" class="btn secondary btn-3d ripple">
+                        <i class="fas fa-calendar-alt"></i> Check Tomorrow
+                    </button>
+                    <button id="reset" class="btn danger btn-3d ripple">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div id="loader" class="loader hidden">
+            <div class="spinner"></div>
+            <p>Fetching information from eCourts...</p>
+        </div>
+
+        <div id="error-box" class="error-box glass hidden">
+            <p id="error-message"></p>
+            <button id="close-error" class="close-btn">×</button>
+        </div>
+
+        <section id="case-results-section" class="results-section hidden">
+            <div class="container">
+                <h2 class="gradient-text">Case Information</h2>
+                <div class="result-card glass">
+                    <div class="result-field">
+                        <span class="field-label">Case Number:</span>
+                        <span id="result-case-number" class="field-value">-</span>
+                    </div>
+                    <div class="result-field">
+                        <span class="field-label">Court Name:</span>
+                        <span id="result-court-name" class="field-value">-</span>
+                    </div>
+                    <div class="result-field">
+                        <span class="field-label">Serial Number:</span>
+                        <span id="result-serial-number" class="field-value">-</span>
+                    </div>
+                    <div class="result-field">
+                        <span class="field-label">Listing Date:</span>
+                        <span id="result-listing-date" class="field-value">-</span>
+                    </div>
+                    <div class="result-field">
+                        <span class="field-label">Status:</span>
+                        <span id="result-status" class="field-value">-</span>
+                    </div>
+                    <div class="result-field">
+                        <span class="field-label">Checked On:</span>
+                        <span id="result-checked-on" class="field-value">-</span>
+                    </div>
+                </div>
+
+                <div class="download-buttons">
+                    <button id="download-json" class="btn primary btn-3d ripple">
+                        <i class="fas fa-file-code"></i> Download JSON
+                    </button>
+                    <button id="download-pdf" class="btn secondary btn-3d ripple">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section glass fade-in" id="about">
+            <div class="container">
+                <h2 class="gradient-text">About</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>eCourts Case Listing Scraper</h3>
+                        <p>Real-time integration with eCourts Services to fetch case listings and cause lists from Indian courts.</p>
+                        
+                        <h3>Developer Information</h3>
+                        <div class="developer-info">
+                            <p><strong>Name:</strong> Viswanathan Chidambaram</p>
+                            <p><strong>Email:</strong> viswanathanchidambaram@gmail.com</p>
+                            <p><strong>Phone:</strong> 9884257129</p>
+                            <p><strong>Education:</strong> B.Tech Computer Science (Cybersecurity) at SRM Ramapuram</p>
+                            <p><strong>Skills:</strong> Python, Flask, JavaScript, Web Scraping, API Development</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer glass">
+        <div class="container">
+            <p>&copy; 2025 eCourts Scraper | Real-time Integration</p>
+            <p>Connected to: <span id="current-date"></span></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
