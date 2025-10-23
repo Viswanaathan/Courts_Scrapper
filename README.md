@@ -1,6 +1,6 @@
 # Courts_Scrapper
 eCourts Scraper: Real-time Indian court case lookup. Check case listings, download cause lists as PDFs. Beautiful glass-morphism UI with custom cursor. Live data from eCourts services. Search by CNR or case details. Responsive design with smooth animations.
-eCourts Case Listing Scraper - Complete Technical Documentation
+eCourts Case Listing Scraper 
 🎯 What It Is
 A full-stack web application that provides real-time access to Indian court case information by integrating with the official eCourts services portal. The system enables users to check case listings, search specific cases, and download cause lists from various courts across India.
 
